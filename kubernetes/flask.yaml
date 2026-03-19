@@ -1,0 +1,100 @@
+# Манифест для Flask-приложения в Kubernetes
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask
+  namespace: bora-climate
+  labels:
+    app: flask
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask
+  template:
+    metadata:
+      labels:
+        app: flask
+    spec:
+      containers:
+        - name: flask
+          # Используем образ, который мы собрали ранее
+          # В реальном проекте нужно загрузить в registry
+          image: sait-montash-web:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+              name: http
+          env:
+            # Переменные окружения для подключения к PostgreSQL
+            - name: DATABASE_URL
+              # Подключаемся к PostgreSQL по имени сервиса
+              value: "postgresql://postgres:postgres@postgres:5432/bora_climate"
+            - name: FLASK_ENV
+              value: "production"
+            - name: SECRET_KEY
+              # В продакшене использовать более сложный ключ
+              value: "dev-secret-key-change-in-production"
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+          livenessProbe:
+            # Проверка, что контейнер жив
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            # Проверка, что контейнер готов принимать трафик
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask
+  namespace: bora-climate
+spec:
+  type: NodePort
+  # NodePort — открывает порт на всех нодах кластера
+  # Можно получить доступ снаружи
+  ports:
+    - port: 5000
+      targetPort: 5000
+      nodePort: 30080
+      protocol: TCP
+      name: http
+  selector:
+    app: flask
+
+---
+# Ingress — для доступа по домену (опционально)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flask-ingress
+  namespace: bora-climate
+  annotations:
+    # Ingress использует встроенный ingress-контроллер k3d
+    ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: flask
+                port:
+                  number: 5000

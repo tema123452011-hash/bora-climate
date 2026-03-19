@@ -1,0 +1,74 @@
+{% extends 'admin/base.html' %}
+
+{% block head_meta %}
+    <title>BORA Climate — Админ-панель</title>
+{% endblock %}
+
+{% block brand %}
+    <span style="font-weight: bold;">BORA Climate</span>
+{% endblock %}
+
+{% block access_buttons %}
+    {# Убираем кнопку "Модель - Создать" если нужно #}
+    {{ super() }}
+{% endblock %}
+
+{% block page_body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="mt-4 mb-4">Добро пожаловать в админ-панель BORA Climate</h1>
+        </div>
+    </div>
+    
+    <div class="row">
+        {# Карточка: Заявки #}
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">Заявки</div>
+                <div class="card-body">
+                    <h5 class="card-title">Управление заявками</h5>
+                    <p class="card-text">Просматривайте и обрабатывайте заявки с формы обратной связи.</p>
+                    <a href="/admin/order/" class="btn btn-light">Перейти</a>
+                </div>
+            </div>
+        </div>
+        
+        {# Карточка: Услуги #}
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Услуги</div>
+                <div class="card-body">
+                    <h5 class="card-title">Редактирование услуг</h5>
+                    <p class="card-text">Изменяйте цены, описания и детали услуг (кондиционирование, сервис, вентиляция).</p>
+                    <a href="/admin/service/" class="btn btn-light">Перейти</a>
+                </div>
+            </div>
+        </div>
+        
+        {# Карточка: Галерея #}
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">Галерея</div>
+                <div class="card-body">
+                    <h5 class="card-title">Фотогалерея</h5>
+                    <p class="card-text">Добавляйте и удаляйте фотографии работ для частных и юридических лиц.</p>
+                    <a href="/admin/galleryphoto/" class="btn btn-light">Перейти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="alert alert-secondary">
+                <h4>Быстрые ссылки:</h4>
+                <ul>
+                    <li><a href="/">Перейти на сайт</a></li>
+                    <li><a href="/admin/">Админ-панель</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+# Веб-фреймворк
+Flask==3.0.0
+Flask-SQLAlchemy==3.1.1
+Flask-Admin==2.0.2
+Flask-Migrate==4.0.5
+
+# База данных
+psycopg2-binary==2.9.9
+
+# Работа с формами
+Flask-WTF==1.2.1
+WTForms==3.1.1
+email-validator==2.1.0
+
+# Локализация (русский язык для админки)
+Flask-Babel==4.0.0
+Babel==2.14.0
+
+# Утилиты
+python-dotenv==1.0.0
+Werkzeug==3.0.1
+
+# Для запуска в продакшене
+gunicorn==21.2.0

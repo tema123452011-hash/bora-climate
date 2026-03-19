@@ -1,0 +1,6 @@
+{% extends admin_base_template %}
+{% block head %}
+    {{ super() }}
+    <!-- Подключаем русский язык для админки -->
+    <script src="{{ url_for('static', filename='admin_ru.js') }}"></script>
+{% endblock %}
