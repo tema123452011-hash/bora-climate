@@ -55,7 +55,6 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 # Flask-Admin — админ-панель
-# base_template — использовать Bootstrap 5
 admin = Admin(app, name='BORA Climate Админка')
 
 # ============================================

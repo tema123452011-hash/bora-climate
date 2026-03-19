@@ -3,7 +3,8 @@
  * Этот скрипт заменяет английские надписи на русские
  */
 
-document.addEventListener('DOMContentLoaded', function() {
+// Функция замены текста - запускаем сразу и после загрузки DOM
+function applyTranslations() {
     // Объект с переводами
     const translations = {
         'List': 'Список',
@@ -42,6 +43,18 @@ document.addEventListener('DOMContentLoaded', function() {
         'entries': 'записей',
         'Showing': 'Показано',
         'of': 'из',
+        // Дополнительные переводы
+        'Add': 'Добавить',
+        'Back': 'Назад',
+        'Refresh': 'Обновить',
+        'Column': 'Колонка',
+        'Set to None': 'Установить пустым',
+        'Please select an action': 'Выберите действие',
+        'Record': 'Запись',
+        'Records': 'Записи',
+        'Advanced': 'Дополнительно',
+        'Apply': 'Применить',
+        'Clear': 'Очистить',
     };
     
     // Функция замены текста
@@ -68,20 +81,39 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (node.placeholder && translations.hasOwnProperty(node.placeholder)) {
                     node.placeholder = translations[node.placeholder];
                 }
+                
+                // Проверяем title (всплывающая подсказка)
+                if (node.title && translations.hasOwnProperty(node.title)) {
+                    node.title = translations[node.title];
+                }
             }
         }
     }
     
     // Запускаем замену
     replaceText(document.body);
+}
     
-    // Также следим за изменениями в DOM (для динамически добавляемых элементов)
-    const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            mutation.addedNodes.forEach(replaceText);
+// Запускаем при загрузке DOM
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyTranslations);
+} else {
+    applyTranslations();
+}
+
+// Также следим за изменениями в DOM (для динамически добавляемых элементов)
+const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+                applyTranslations();
+            }
         });
     });
+});
     
+// Начинаем наблюдение после загрузки DOM
+document.addEventListener('DOMContentLoaded', function() {
     observer.observe(document.body, {
         childList: true,
         subtree: true

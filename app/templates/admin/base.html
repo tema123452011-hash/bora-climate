@@ -1,6 +1,9 @@
-{% extends admin_base_template %}
-{% block head %}
+{# Кастомный базовый шаблон для Flask-Admin с русским языком #}
+{# Flask-Admin ищет этот шаблон в templates/admin/base.html #}
+
+{% extends 'admin/base.html' %}
+
+{% block tail %}
     {{ super() }}
-    <!-- Подключаем русский язык для админки -->
     <script src="{{ url_for('static', filename='admin_ru.js') }}"></script>
 {% endblock %}
