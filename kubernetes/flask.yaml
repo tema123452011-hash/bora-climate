@@ -19,10 +19,9 @@ spec:
     spec:
       containers:
         - name: flask
-          # Используем образ, который мы собрали ранее
-          # В реальном проекте нужно загрузить в registry
-          image: sait-montash-web:latest
-          imagePullPolicy: IfNotPresent
+          # Используем образ из Docker Hub
+          image: tema201111/bora-climate:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 5000
               name: http
